@@ -15,6 +15,12 @@ export default function Home() {
   const [logs, setLogs] = useState([]);
   const [showLogs, setShowLogs] = useState(false);
 
+  // UI Interactive States (Hover/Focus)
+  const [isRecordingHovered, setIsRecordingHovered] = useState(false);
+  const [isResetHovered, setIsResetHovered] = useState(false);
+  const [isSaveHovered, setIsSaveHovered] = useState(false);
+  const [focusedField, setFocusedField] = useState(null);
+
   const recognitionRef = useRef(null);
   const isRecordingRef = useRef(false);
   const cumulativeTranscriptRef = useRef('');
@@ -306,169 +312,331 @@ export default function Home() {
     return null; // Hydration guard
   }
 
+  // Common styles
+  const pageContainerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '100vh',
+    backgroundColor: '#f8fafc',
+    padding: '20px',
+    boxSizing: 'border-box',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
+  };
+
+  const cardStyle = {
+    width: '100%',
+    maxWidth: '480px',
+    backgroundColor: '#ffffff',
+    borderRadius: '16px',
+    boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03)',
+    border: '1px solid #f1f5f9',
+    padding: '40px 32px',
+    boxSizing: 'border-box'
+  };
+
+  const headerLogoStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    marginBottom: '30px',
+    justifyContent: 'center'
+  };
+
+  const headingStyle = {
+    fontSize: '22px',
+    fontWeight: '700',
+    color: '#0f172a',
+    margin: 0,
+    letterSpacing: '-0.02em'
+  };
+
+  const labelStyle = {
+    fontSize: '13px',
+    fontWeight: '600',
+    color: '#475569',
+    marginBottom: '6px',
+    display: 'block'
+  };
+
+  const getInputStyle = (fieldName) => ({
+    padding: '11px 14px',
+    fontSize: '14px',
+    borderRadius: '8px',
+    border: focusedField === fieldName ? '2px solid #3b82f6' : '1px solid #cbd5e1',
+    backgroundColor: '#f8fafc',
+    outline: 'none',
+    width: '100%',
+    boxSizing: 'border-box',
+    transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+    boxShadow: focusedField === fieldName ? '0 0 0 3px rgba(59, 130, 246, 0.15)' : 'none'
+  });
+
+  const getRecordButtonStyle = () => ({
+    padding: '12px 24px',
+    fontSize: '15px',
+    fontWeight: '600',
+    color: '#ffffff',
+    backgroundColor: isRecording 
+      ? '#ef4444' 
+      : (isRecordingHovered ? '#1d4ed8' : '#2563eb'),
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    width: '100%',
+    transition: 'background-color 0.2s ease, transform 0.1s ease',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
+    boxShadow: isRecording 
+      ? '0 4px 12px rgba(239, 68, 68, 0.2)' 
+      : '0 4px 12px rgba(37, 99, 235, 0.15)',
+    transform: isRecordingHovered ? 'translateY(-1px)' : 'none'
+  });
+
   // Setup Screen
   if (!isSetupComplete) {
     return (
-      <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '400px', margin: '50px auto', border: '1px solid #ccc', borderRadius: '8px' }}>
-        <h2 style={{ marginTop: 0 }}>SafeWord Setup</h2>
-        <form onSubmit={handleSaveSetup} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <label htmlFor="codePhrase" style={{ fontWeight: 'bold' }}>Secret Code Phrase:</label>
-            <input
-              type="text"
-              id="codePhrase"
-              name="codePhrase"
-              required
-              placeholder="e.g. apple pie"
-              style={{ padding: '8px', fontSize: '14px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
+      <div style={pageContainerStyle}>
+        <div style={cardStyle}>
+          <div style={headerLogoStyle}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+              <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+              <line x1="12" x2="12" y1="19" y2="22" />
+            </svg>
+            <h1 style={headingStyle}>SafeWord Setup</h1>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <label htmlFor="emergencyCategory" style={{ fontWeight: 'bold' }}>Emergency Category:</label>
-            <select
-              id="emergencyCategory"
-              name="emergencyCategory"
-              style={{ padding: '8px', fontSize: '14px', borderRadius: '4px', border: '1px solid #ccc' }}
+          <form onSubmit={handleSaveSetup} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div>
+              <label htmlFor="codePhrase" style={labelStyle}>Secret Code Phrase:</label>
+              <input
+                type="text"
+                id="codePhrase"
+                name="codePhrase"
+                required
+                onFocus={() => setFocusedField('codePhrase')}
+                onBlur={() => setFocusedField(null)}
+                placeholder="e.g., apple pie"
+                style={getInputStyle('codePhrase')}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="emergencyCategory" style={labelStyle}>Emergency Category:</label>
+              <select
+                id="emergencyCategory"
+                name="emergencyCategory"
+                onFocus={() => setFocusedField('emergencyCategory')}
+                onBlur={() => setFocusedField(null)}
+                style={getInputStyle('emergencyCategory')}
+              >
+                <option value="Harassment">Harassment</option>
+                <option value="Kidnapping">Kidnapping</option>
+                <option value="Medical">Medical</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="trustedEmail" style={labelStyle}>Trusted Contact Email:</label>
+              <input
+                type="email"
+                id="trustedEmail"
+                name="trustedEmail"
+                required
+                onFocus={() => setFocusedField('trustedEmail')}
+                onBlur={() => setFocusedField(null)}
+                placeholder="e.g., contact@example.com"
+                style={getInputStyle('trustedEmail')}
+              />
+            </div>
+
+            <button
+              type="submit"
+              onMouseEnter={() => setIsSaveHovered(true)}
+              onMouseLeave={() => setIsSaveHovered(false)}
+              style={{
+                padding: '12px',
+                fontSize: '15px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                backgroundColor: isSaveHovered ? '#16a34a' : '#22c55e',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                transition: 'background-color 0.2s ease, transform 0.1s ease',
+                transform: isSaveHovered ? 'translateY(-1px)' : 'none',
+                boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
+              }}
             >
-              <option value="Harassment">Harassment</option>
-              <option value="Kidnapping">Kidnapping</option>
-              <option value="Medical">Medical</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <label htmlFor="trustedEmail" style={{ fontWeight: 'bold' }}>Trusted Contact Email:</label>
-            <input
-              type="email"
-              id="trustedEmail"
-              name="trustedEmail"
-              required
-              placeholder="e.g. contact@example.com"
-              style={{ padding: '8px', fontSize: '14px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-          </div>
-
-          <button
-            type="submit"
-            style={{
-              padding: '10px',
-              fontSize: '16px',
-              cursor: 'pointer',
-              backgroundColor: '#5cb85c',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              fontWeight: 'bold'
-            }}
-          >
-            Save & Continue
-          </button>
-        </form>
+              Save & Continue
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
 
   // Voice Journal Screen
   return (
-    <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', minHeight: '85vh', justifyContent: 'space-between' }}>
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1>My Voice Journal</h1>
-          <button 
-            onClick={handleResetSetup} 
-            style={{ background: 'none', border: 'none', color: '#0275d8', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
-          >
-            Reset Setup
-          </button>
-        </div>
-        
-        {!isSupported ? (
-          <div style={{ color: 'red', marginBottom: '20px' }}>
-            Speech Recognition is not supported in this browser. Please try using Google Chrome.
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-            <div>
-              <button 
-                onClick={handleToggleRecording}
-                style={{
-                  padding: '10px 20px',
-                  fontSize: '16px',
-                  cursor: 'pointer',
-                  backgroundColor: isRecording ? '#d9534f' : '#0275d8',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px'
-                }}
-              >
-                {isRecording ? 'Stop Recording Entry' : 'Start Recording Entry'}
-              </button>
-              {isRecording && <span style={{ marginLeft: '10px', color: 'green' }}>● Recording...</span>}
+    <div style={pageContainerStyle}>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes pulse {
+          0% { transform: scale(0.9); opacity: 0.6; }
+          50% { transform: scale(1.1); opacity: 1; }
+          100% { transform: scale(0.9); opacity: 0.6; }
+        }
+        body {
+          margin: 0;
+          padding: 0;
+          background-color: #f8fafc;
+        }
+      `}} />
+
+      <div style={{ ...cardStyle, maxWidth: '540px', display: 'flex', flexDirection: 'column', minHeight: '520px', justifyContent: 'space-between' }}>
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', borderBottom: '1px solid #f1f5f9', paddingBottom: '15px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+                <line x1="12" x2="12" y1="19" y2="22" />
+              </svg>
+              <h2 style={{ ...headingStyle, fontSize: '18px' }}>SafeWord — Voice Journal</h2>
             </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-              <label htmlFor="transcript-area" style={{ fontWeight: 'bold' }}>Transcript:</label>
-              <textarea
-                id="transcript-area"
-                value={transcript}
-                readOnly
-                placeholder="Your live speech transcript will appear here..."
-                style={{
-                  width: '100%',
-                  height: '250px',
-                  padding: '10px',
-                  fontSize: '14px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                  resize: 'vertical'
-                }}
-              />
-            </div>
+            
+            <button 
+              onClick={handleResetSetup} 
+              onMouseEnter={() => setIsResetHovered(true)}
+              onMouseLeave={() => setIsResetHovered(false)}
+              style={{ 
+                background: 'none', 
+                border: 'none', 
+                color: isResetHovered ? '#1d4ed8' : '#3b82f6', 
+                cursor: 'pointer', 
+                textDecoration: 'underline', 
+                padding: 0,
+                fontSize: '13px',
+                fontWeight: '500',
+                transition: 'color 0.15s ease'
+              }}
+            >
+              Reset Setup
+            </button>
           </div>
-        )}
-      </div>
+          
+          {!isSupported ? (
+            <div style={{ color: '#ef4444', marginBottom: '20px', fontSize: '14px', lineHeight: '1.5', padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fee2e2' }}>
+              Speech Recognition is not supported in this browser. Please try using Google Chrome.
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <button 
+                  onClick={handleToggleRecording}
+                  onMouseEnter={() => setIsRecordingHovered(true)}
+                  onMouseLeave={() => setIsRecordingHovered(false)}
+                  style={getRecordButtonStyle()}
+                >
+                  {isRecording ? (
+                    <>
+                      <span style={{ 
+                        display: 'inline-block', 
+                        width: '8px', 
+                        height: '8px', 
+                        backgroundColor: '#ffffff', 
+                        borderRadius: '50%',
+                        animation: 'pulse 1.5s infinite'
+                      }} />
+                      Stop Recording Entry
+                    </>
+                  ) : (
+                    'Start Recording Entry'
+                  )}
+                </button>
+                {isRecording && (
+                  <span style={{ fontSize: '13px', color: '#10b981', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    Listening...
+                  </span>
+                )}
+              </div>
 
-      {/* Hidden Logs Viewer Section */}
-      <div style={{ marginTop: '50px', borderTop: '1px solid #eee', paddingTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '11px', color: '#999', cursor: 'default' }}>Tags:</span>
-          <input
-            type="text"
-            value={unlockText}
-            onChange={handleUnlockChange}
-            placeholder="journal"
-            style={{
-              border: 'none',
-              background: '#f5f5f5',
-              color: '#666',
-              fontSize: '11px',
-              padding: '3px 8px',
-              borderRadius: '12px',
-              width: '80px',
-              textAlign: 'center',
-              outline: 'none'
-            }}
-          />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label htmlFor="transcript-area" style={labelStyle}>Live Journal Entry Transcript:</label>
+                <textarea
+                  id="transcript-area"
+                  value={transcript}
+                  readOnly
+                  placeholder="Start recording and speak. Your live transcript will show here..."
+                  style={{
+                    width: '100%',
+                    height: '180px',
+                    padding: '14px',
+                    fontSize: '14px',
+                    lineHeight: '1.6',
+                    color: '#334155',
+                    backgroundColor: isRecording ? '#f8fafc' : '#ffffff',
+                    border: isRecording ? '2px solid #3b82f6' : '1px solid #cbd5e1',
+                    borderRadius: '8px',
+                    resize: 'none',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    boxSizing: 'border-box',
+                    transition: 'border-color 0.2s ease, background-color 0.2s ease',
+                    boxShadow: isRecording ? '0 0 0 3px rgba(59, 130, 246, 0.1)' : 'none'
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
-        {showLogs && (
-          <div style={{ marginTop: '20px', width: '100%', maxWidth: '500px', border: '1px solid #ddd', padding: '15px', borderRadius: '4px', background: '#fafafa', textAlign: 'left' }}>
-            <h3 style={{ marginTop: 0, fontSize: '14px', borderBottom: '1px solid #eee', paddingBottom: '5px' }}>Access Logs</h3>
-            {logs.length === 0 ? (
-              <p style={{ fontSize: '12px', color: '#666', margin: 0 }}>No emergency events logged yet.</p>
-            ) : (
-              <ul style={{ fontSize: '12px', paddingLeft: '20px', margin: 0 }}>
-                {logs.map((log, idx) => (
-                  <li key={idx} style={{ marginBottom: '5px' }}>
-                    <strong>[{log.timestamp}]</strong> Category: {log.category}
-                  </li>
-                ))}
-              </ul>
-            )}
+        {/* Hidden Logs Viewer Section */}
+        <div style={{ marginTop: '40px', borderTop: '1px solid #f1f5f9', paddingTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ fontSize: '11px', color: '#94a3b8', cursor: 'default', fontWeight: '500' }}>Tags:</span>
+            <input
+              type="text"
+              value={unlockText}
+              onChange={handleUnlockChange}
+              placeholder="journal"
+              style={{
+                border: 'none',
+                background: '#e2e8f0',
+                color: '#475569',
+                fontSize: '11px',
+                padding: '3px 8px',
+                borderRadius: '12px',
+                width: '75px',
+                textAlign: 'center',
+                outline: 'none',
+                fontWeight: '500',
+                transition: 'background-color 0.15s ease'
+              }}
+            />
           </div>
-        )}
+
+          {showLogs && (
+            <div style={{ marginTop: '20px', width: '100%', border: '1px solid #e2e8f0', padding: '16px', borderRadius: '8px', background: '#f8fafc', textAlign: 'left', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.02)' }}>
+              <h3 style={{ marginTop: 0, fontSize: '13px', borderBottom: '1px solid #e2e8f0', paddingBottom: '6px', color: '#0f172a', fontWeight: '700' }}>Trigger Logs</h3>
+              {logs.length === 0 ? (
+                <p style={{ fontSize: '12px', color: '#64748b', margin: 0 }}>No emergency events logged.</p>
+              ) : (
+                <ul style={{ fontSize: '12px', paddingLeft: '16px', margin: 0, color: '#334155', lineHeight: '1.6' }}>
+                  {logs.map((log, idx) => (
+                    <li key={idx} style={{ marginBottom: '6px' }}>
+                      <span style={{ color: '#64748b', fontWeight: '500' }}>[{log.timestamp}]</span> Category: <span style={{ fontWeight: '600' }}>{log.category}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
