@@ -14,6 +14,7 @@ Make sure you have [Node.js](https://nodejs.org/) installed.
    ```bash
    cp .env.local.example .env.local
    ```
+   *(Note: To obtain a `GEMINI_API_KEY`, visit [Google AI Studio](https://aistudio.google.com/), sign in, click **Get API key**, create a new key, and copy it into your `.env.local` file).*
 2. Install the dependencies:
    ```bash
    npm install
