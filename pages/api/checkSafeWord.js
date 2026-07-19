@@ -1,4 +1,4 @@
-const SIMILARITY_THRESHOLD = 0.85;
+const SIMILARITY_THRESHOLD = 0.72;
 
 // Helper to fetch embeddings from the Google Gemini API (gemini-embedding-001)
 async function getEmbedding(text, apiKey) {
