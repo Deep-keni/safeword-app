@@ -319,7 +319,7 @@ export default function Home() {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #eef6ff 0%, #e6fbf4 100%)',
+    backgroundImage: 'linear-gradient(135deg, #dbeafe 0%, #ccfbf1 100%)',
     padding: '20px',
     boxSizing: 'border-box',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
@@ -398,10 +398,28 @@ export default function Home() {
     transform: isRecordingHovered ? 'translateY(-1px)' : 'none'
   });
 
+  // Global stylesheet shared by both screens
+  const globalStyles = (
+    <style dangerouslySetInnerHTML={{__html: `
+      @keyframes pulse {
+        0% { transform: scale(0.9); opacity: 0.6; }
+        50% { transform: scale(1.15); opacity: 1; }
+        100% { transform: scale(0.9); opacity: 0.6; }
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #dbeafe 0%, #ccfbf1 100%) !important;
+        min-height: 100vh;
+      }
+    `}} />
+  );
+
   // Setup Screen
   if (!isSetupComplete) {
     return (
       <div style={pageContainerStyle}>
+        {globalStyles}
         <div style={cardStyle}>
           <div style={headerLogoStyle}>
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -489,19 +507,7 @@ export default function Home() {
   // Voice Journal Screen
   return (
     <div style={pageContainerStyle}>
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes pulse {
-          0% { transform: scale(0.9); opacity: 0.6; }
-          50% { transform: scale(1.15); opacity: 1; }
-          100% { transform: scale(0.9); opacity: 0.6; }
-        }
-        body {
-          margin: 0;
-          padding: 0;
-          background: linear-gradient(135deg, #eef6ff 0%, #e6fbf4 100%);
-          min-height: 100vh;
-        }
-      `}} />
+      {globalStyles}
 
       <div style={{ ...cardStyle, maxWidth: '540px', display: 'flex', flexDirection: 'column', minHeight: '520px', justifyContent: 'space-between' }}>
         <div>
