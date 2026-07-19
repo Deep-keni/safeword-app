@@ -340,7 +340,7 @@ export default function Home() {
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
-    marginBottom: '30px',
+    marginBottom: '10px',
     justifyContent: 'center'
   };
 
@@ -430,6 +430,9 @@ export default function Home() {
             </svg>
             <h1 style={headingStyle}>SafeWord Setup</h1>
           </div>
+          <p style={{ fontSize: '13px', color: '#64748b', textAlign: 'center', marginTop: '-5px', marginBottom: '25px', lineHeight: '1.4' }}>
+            Set up your private safety trigger in under a minute.
+          </p>
 
           <form onSubmit={handleSaveSetup} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
@@ -476,28 +479,33 @@ export default function Home() {
               />
             </div>
 
-            <button
-              type="submit"
-              onMouseEnter={() => setIsSaveHovered(true)}
-              onMouseLeave={() => setIsSaveHovered(false)}
-              style={{
-                padding: '12px',
-                fontSize: '15px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                background: isSaveHovered 
-                  ? 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)' 
-                  : 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                transition: 'all 0.3s ease',
-                transform: isSaveHovered ? 'translateY(-1px)' : 'none',
-                boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
-              }}
-            >
-              Save & Continue
-            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <button
+                type="submit"
+                onMouseEnter={() => setIsSaveHovered(true)}
+                onMouseLeave={() => setIsSaveHovered(false)}
+                style={{
+                  padding: '12px',
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  background: isSaveHovered 
+                    ? 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)' 
+                    : 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  transition: 'all 0.3s ease',
+                  transform: isSaveHovered ? 'translateY(-1px)' : 'none',
+                  boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
+                }}
+              >
+                Save & Continue
+              </button>
+              <p style={{ fontSize: '11px', color: '#94a3b8', textAlign: 'center', margin: 0, marginTop: '2px' }}>
+                Your code phrase stays private and is never shared.
+              </p>
+            </div>
           </form>
         </div>
       </div>
@@ -509,17 +517,22 @@ export default function Home() {
     <div style={pageContainerStyle}>
       {globalStyles}
 
-      <div style={{ ...cardStyle, maxWidth: '540px', display: 'flex', flexDirection: 'column', minHeight: '520px', justifyContent: 'space-between' }}>
+      <div style={{ ...cardStyle, maxWidth: '540px', display: 'flex', flexDirection: 'column', minHeight: '530px', justifyContent: 'space-between' }}>
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', borderBottom: '1px solid #f1f5f9', paddingBottom: '15px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                <path d="M9 10v4" />
-                <path d="M12 7v10" />
-                <path d="M15 9v6" />
-              </svg>
-              <h2 style={{ ...headingStyle, fontSize: '18px' }}>SafeWord — Voice Journal</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', borderBottom: '1px solid #f1f5f9', paddingBottom: '15px' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="M9 10v4" />
+                  <path d="M12 7v10" />
+                  <path d="M15 9v6" />
+                </svg>
+                <h2 style={{ ...headingStyle, fontSize: '18px' }}>SafeWord — Voice Journal</h2>
+              </div>
+              <p style={{ fontSize: '11px', color: '#64748b', margin: '4px 0 0 34px', fontWeight: '500' }}>
+                Speak naturally. Stay safe. No one will know.
+              </p>
             </div>
             
             <button 
@@ -535,7 +548,8 @@ export default function Home() {
                 padding: 0,
                 fontSize: '13px',
                 fontWeight: '500',
-                transition: 'color 0.15s ease'
+                transition: 'color 0.15s ease',
+                marginTop: '4px'
               }}
             >
               Reset Setup
@@ -589,7 +603,7 @@ export default function Home() {
                   placeholder="Start recording and speak. Your live transcript will show here..."
                   style={{
                     width: '100%',
-                    height: '180px',
+                    height: '170px',
                     padding: '14px',
                     fontSize: '14px',
                     lineHeight: '1.6',
@@ -605,13 +619,16 @@ export default function Home() {
                     boxShadow: isRecording ? '0 0 0 3px rgba(59, 130, 246, 0.1)' : 'none'
                   }}
                 />
+                <p style={{ fontSize: '11px', color: '#94a3b8', textAlign: 'center', margin: '6px 0 0 0' }}>
+                  🔒 Powered by AI semantic detection — Idea2Impact 2026
+                </p>
               </div>
             </div>
           )}
         </div>
 
         {/* Hidden Logs Viewer Section */}
-        <div style={{ marginTop: '40px', borderTop: '1px solid #f1f5f9', paddingTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ marginTop: '35px', borderTop: '1px solid #f1f5f9', paddingTop: '15px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ fontSize: '11px', color: '#94a3b8', cursor: 'default', fontWeight: '500' }}>Tags:</span>
             <input
