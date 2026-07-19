@@ -319,7 +319,7 @@ export default function Home() {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: '100vh',
-    backgroundColor: '#f8fafc',
+    background: 'linear-gradient(135deg, #eef6ff 0%, #e6fbf4 100%)',
     padding: '20px',
     boxSizing: 'border-box',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
@@ -330,8 +330,8 @@ export default function Home() {
     maxWidth: '480px',
     backgroundColor: '#ffffff',
     borderRadius: '16px',
-    boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03)',
-    border: '1px solid #f1f5f9',
+    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)',
+    border: '1px solid #e2e8f0',
     padding: '40px 32px',
     boxSizing: 'border-box'
   };
@@ -339,7 +339,7 @@ export default function Home() {
   const headerLogoStyle = {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px',
+    gap: '12px',
     marginBottom: '30px',
     justifyContent: 'center'
   };
@@ -349,7 +349,7 @@ export default function Home() {
     fontWeight: '700',
     color: '#0f172a',
     margin: 0,
-    letterSpacing: '-0.02em'
+    letterSpacing: '-0.025em'
   };
 
   const labelStyle = {
@@ -364,13 +364,13 @@ export default function Home() {
     padding: '11px 14px',
     fontSize: '14px',
     borderRadius: '8px',
-    border: focusedField === fieldName ? '2px solid #3b82f6' : '1px solid #cbd5e1',
+    border: focusedField === fieldName ? '2px solid #0d9488' : '1px solid #cbd5e1',
     backgroundColor: '#f8fafc',
     outline: 'none',
     width: '100%',
     boxSizing: 'border-box',
     transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
-    boxShadow: focusedField === fieldName ? '0 0 0 3px rgba(59, 130, 246, 0.15)' : 'none'
+    boxShadow: focusedField === fieldName ? '0 0 0 3px rgba(13, 148, 136, 0.15)' : 'none'
   });
 
   const getRecordButtonStyle = () => ({
@@ -378,21 +378,23 @@ export default function Home() {
     fontSize: '15px',
     fontWeight: '600',
     color: '#ffffff',
-    backgroundColor: isRecording 
-      ? '#ef4444' 
-      : (isRecordingHovered ? '#1d4ed8' : '#2563eb'),
+    background: isRecording 
+      ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' 
+      : (isRecordingHovered 
+          ? 'linear-gradient(135deg, #1d4ed8 0%, #0f766e 100%)' 
+          : 'linear-gradient(135deg, #2563eb 0%, #0d9488 100%)'),
     border: 'none',
     borderRadius: '8px',
     cursor: 'pointer',
     width: '100%',
-    transition: 'background-color 0.2s ease, transform 0.1s ease',
+    transition: 'all 0.3s ease',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     gap: '8px',
     boxShadow: isRecording 
-      ? '0 4px 12px rgba(239, 68, 68, 0.2)' 
-      : '0 4px 12px rgba(37, 99, 235, 0.15)',
+      ? '0 4px 14px rgba(239, 68, 68, 0.25)' 
+      : '0 4px 14px rgba(37, 99, 235, 0.2)',
     transform: isRecordingHovered ? 'translateY(-1px)' : 'none'
   });
 
@@ -402,10 +404,11 @@ export default function Home() {
       <div style={pageContainerStyle}>
         <div style={cardStyle}>
           <div style={headerLogoStyle}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-              <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-              <line x1="12" x2="12" y1="19" y2="22" />
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="M9 10v4" />
+              <path d="M12 7v10" />
+              <path d="M15 9v6" />
             </svg>
             <h1 style={headingStyle}>SafeWord Setup</h1>
           </div>
@@ -464,11 +467,13 @@ export default function Home() {
                 fontSize: '15px',
                 fontWeight: '600',
                 cursor: 'pointer',
-                backgroundColor: isSaveHovered ? '#16a34a' : '#22c55e',
+                background: isSaveHovered 
+                  ? 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)' 
+                  : 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',
-                transition: 'background-color 0.2s ease, transform 0.1s ease',
+                transition: 'all 0.3s ease',
                 transform: isSaveHovered ? 'translateY(-1px)' : 'none',
                 boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
               }}
@@ -487,24 +492,26 @@ export default function Home() {
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes pulse {
           0% { transform: scale(0.9); opacity: 0.6; }
-          50% { transform: scale(1.1); opacity: 1; }
+          50% { transform: scale(1.15); opacity: 1; }
           100% { transform: scale(0.9); opacity: 0.6; }
         }
         body {
           margin: 0;
           padding: 0;
-          background-color: #f8fafc;
+          background: linear-gradient(135deg, #eef6ff 0%, #e6fbf4 100%);
+          min-height: 100vh;
         }
       `}} />
 
       <div style={{ ...cardStyle, maxWidth: '540px', display: 'flex', flexDirection: 'column', minHeight: '520px', justifyContent: 'space-between' }}>
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', borderBottom: '1px solid #f1f5f9', paddingBottom: '15px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-                <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-                <line x1="12" x2="12" y1="19" y2="22" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path d="M9 10v4" />
+                <path d="M12 7v10" />
+                <path d="M15 9v6" />
               </svg>
               <h2 style={{ ...headingStyle, fontSize: '18px' }}>SafeWord — Voice Journal</h2>
             </div>
@@ -535,34 +542,36 @@ export default function Home() {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <button 
-                  onClick={handleToggleRecording}
-                  onMouseEnter={() => setIsRecordingHovered(true)}
-                  onMouseLeave={() => setIsRecordingHovered(false)}
-                  style={getRecordButtonStyle()}
-                >
-                  {isRecording ? (
-                    <>
-                      <span style={{ 
-                        display: 'inline-block', 
-                        width: '8px', 
-                        height: '8px', 
-                        backgroundColor: '#ffffff', 
-                        borderRadius: '50%',
-                        animation: 'pulse 1.5s infinite'
-                      }} />
-                      Stop Recording Entry
-                    </>
-                  ) : (
-                    'Start Recording Entry'
-                  )}
-                </button>
-                {isRecording && (
-                  <span style={{ fontSize: '13px', color: '#10b981', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    Listening...
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '15px' }}>
+                <div style={{ flex: 1 }}>
+                  <button 
+                    onClick={handleToggleRecording}
+                    onMouseEnter={() => setIsRecordingHovered(true)}
+                    onMouseLeave={() => setIsRecordingHovered(false)}
+                    style={getRecordButtonStyle()}
+                  >
+                    {isRecording ? 'Stop Recording Entry' : 'Start Recording Entry'}
+                  </button>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: '95px', justifyContent: 'flex-end' }}>
+                  <span style={{ 
+                    display: 'inline-block', 
+                    width: '8px', 
+                    height: '8px', 
+                    backgroundColor: isRecording ? '#10b981' : '#94a3b8', 
+                    borderRadius: '50%',
+                    animation: isRecording ? 'pulse 1.5s infinite' : 'none',
+                    transition: 'background-color 0.3s ease'
+                  }} />
+                  <span style={{ 
+                    fontSize: '13px', 
+                    color: isRecording ? '#10b981' : '#64748b', 
+                    fontWeight: '600',
+                    transition: 'color 0.3s ease'
+                  }}>
+                    {isRecording ? 'Listening...' : 'Idle'}
                   </span>
-                )}
+                </div>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
