@@ -29,3 +29,22 @@ just by speaking naturally.
 ## Setup
 1. Clone the repo, run `npm install`
 2. Create `.env.local` with:
+   GEMINI_API_KEY=your_key
+   NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_id
+   NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_id
+   NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_key
+3.3. `npm run dev`
+
+## Live Demo
+https://safeword-app.vercel.app/
+
+## Known Limitations
+- Requires browser tab active + mic permission for continuous listening
+- Best tested on Chrome desktop (Web Speech API support varies by browser)
+- Future version: native app with background listening service
+
+## Built for
+Idea2Impact 2026 Online Hackathon (NxtWave Academy)
+
+
+
