@@ -1,15 +1,17 @@
 const SIMILARITY_THRESHOLD = 0.85;
 
-// Helper to fetch embeddings from the Google Gemini API (text-embedding-004)
+// Helper to fetch embeddings from the Google Gemini API (gemini-embedding-001)
 async function getEmbedding(text, apiKey) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${apiKey}`;
+  console.log(`Calling Gemini Embedding API URL: ${url}`);
+
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'models/text-embedding-004',
+      model: 'models/gemini-embedding-001',
       content: {
         parts: [{ text: text }],
       },
@@ -18,6 +20,9 @@ async function getEmbedding(text, apiKey) {
 
   if (!response.ok) {
     const errText = await response.text();
+    console.error(`FAILED API URL: ${url}`);
+    console.error(`Gemini API Error Response Code: ${response.status}`);
+    console.error(`Gemini API Error Response Body: ${errText}`);
     throw new Error(`Gemini API error: ${response.status} ${errText}`);
   }
 
