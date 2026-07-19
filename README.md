@@ -1,34 +1,31 @@
-# SafeWord — Voice Journal
+# SafeWord — Silent Emergency Signal
 
-A minimal Next.js application setup.
+A covert personal safety web app disguised as a voice journal. Detects a user's 
+pre-set secret code phrase (even when paraphrased) via AI semantic matching, and 
+silently alerts a trusted contact with live location — no visible button, no 
+obvious trigger.
 
-## Getting Started
+## Problem
+Victims of harassment, stalking, or assault often cannot safely use a visible 
+panic button or say an obvious distress word. SafeWord lets them trigger help 
+just by speaking naturally.
 
-### Prerequisites
+## How it works
+1. User sets a secret code phrase, emergency category, and trusted contact email.
+2. App continuously transcribes speech via the Web Speech API.
+3. Each transcript segment is compared to the code phrase using Gemini text 
+   embeddings + cosine similarity (threshold: 0.72).
+4. On a semantic match, the app silently captures GPS location and sends an 
+   automated email alert via EmailJS — no visible UI change.
 
-Make sure you have [Node.js](https://nodejs.org/) installed.
+## Tech Stack
+- Next.js (React) frontend
+- Web Speech API for continuous voice transcription
+- Google Gemini embedding API for semantic similarity matching
+- Browser Geolocation API
+- EmailJS for serverless email alerts
+- Deployed on Vercel
 
-### Setup
-
-1. Copy `.env.local.example` to `.env.local` and fill in the required environment variables:
-   ```bash
-   cp .env.local.example .env.local
-   ```
-   *(Note: To obtain a `GEMINI_API_KEY`, visit [Google AI Studio](https://aistudio.google.com/), sign in, click **Get API key**, create a new key, and copy it into your `.env.local` file).*
-2. Install the dependencies:
-   ```bash
-   npm install
-   ```
-
-### Running Locally
-
-To run the development server:
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
-
-### API Routes
-
-- **POST** `/api/checkSafeWord` — Validation endpoint. Currently returns `{ matched: false }` for all POST requests.
+## Setup
+1. Clone the repo, run `npm install`
+2. Create `.env.local` with:
